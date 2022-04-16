@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import moment from 'moment'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -19,6 +20,7 @@ import './assets/css/fontawesome-free/all.css'
 library.add(fas)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.prototype.moment = moment
 
 Vue.use(BootstrapVue)
 Vue.use(VueSweetalert2)
