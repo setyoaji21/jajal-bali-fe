@@ -61,8 +61,15 @@
               </div>
             </div>
             <div class="col-12 mt-5 text-right">
-              <b-button class="text-right mr-3" variant="danger">Batal</b-button>
-              <b-button variant="success">Simpan</b-button>
+              <b-button
+                @click="$router.push({
+                  path: '/wisata/' + destination.id
+                })"
+                class="text-right mr-3"
+                variant="secondary">
+                Batal
+              </b-button>
+              <b-button @click="updateDestination" variant="success">Simpan</b-button>
             </div>
           </form>
         </b-card>
@@ -72,17 +79,55 @@
   <!-- /.container-fluid -->
 </template>
 <script>
+import { get, pick } from 'lodash'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      wisata: {
-        name: '',
-        category: '',
-        detail: '',
-        price: 0,
-        location: ''
-      }
+      get: get,
+      wisata: {}
     }
+  },
+  computed: {
+    ...mapGetters({
+      destination: 'destination/getDestination'
+    })
+  },
+  methods: {
+    setDestinationData () {
+      this.wisata = this.destination
+    },
+    updateDestination () {
+      let payload = {
+        id: this.destination.id,
+        data: pick(this.wisata, ['name', 'category', 'detail', 'price', 'location'])
+      }
+      this.$store.dispatch('destination/updateDestination', payload)
+        .then(response => {
+          let successMsg = get(response, ['data', 'message'], '')
+          this.$swal({
+            icon: 'success',
+            title: 'Success!',
+            text: successMsg,
+          })
+            .then(response => {
+              if (response.isConfirmed) {
+                this.$router.push({ path: '/wisata/' + this.destination.id })
+              }
+            })
+        })
+        .catch(error => {
+          let errorMsg = get(error, ['response', 'data', 'message'], '')
+          this.$swal({
+            icon: 'error',
+            title: 'Error!',
+            text: errorMsg,
+          })
+        })
+    }
+  },
+  beforeMount () {
+    this.setDestinationData()
   }
 }
 </script>

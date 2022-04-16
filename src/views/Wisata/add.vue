@@ -61,8 +61,8 @@
               </div>
             </div>
             <div class="col-12 mt-5 text-right">
-              <b-button class="text-right mr-3" variant="danger" href="/wisata">Batal</b-button>
-              <b-button variant="success">Simpan</b-button>
+              <b-button class="text-right mr-3" variant="secondary" @click="$router.push({ path: '/wisata' })">Batal</b-button>
+              <b-button variant="success" @click="saveDestination">Simpan</b-button>
             </div>
           </form>
         </b-card>
@@ -72,9 +72,11 @@
   <!-- /.container-fluid -->
 </template>
 <script>
+import { get } from 'lodash'
 export default {
   data () {
     return {
+      get: get,
       wisata: {
         name: '',
         category: '',
@@ -82,6 +84,32 @@ export default {
         price: 0,
         location: ''
       }
+    }
+  },
+  methods: {
+    saveDestination () {
+      this.$store.dispatch('destination/addDestination', this.wisata)
+        .then(response => {
+          let successMsg = get(response, ['data', 'message'], '')
+          this.$swal({
+            icon: 'success',
+            title: 'Success!',
+            text: successMsg,
+          })
+            .then(response => {
+              if (response.isConfirmed) {
+                this.$router.replace({ name: 'wisata' })
+              }
+            })
+        })
+        .catch(error => {
+          let errorMsg = get(error, ['response', 'data', 'message'], '')
+          this.$swal({
+            icon: 'error',
+            title: 'Error!',
+            text: errorMsg,
+          })
+        })
     }
   }
 }

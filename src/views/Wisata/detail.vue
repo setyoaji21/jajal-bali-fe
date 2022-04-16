@@ -3,36 +3,43 @@
   <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800">Wisata 1 </h1>
+    <div class="row mb-3">
+      <h1 class="h3 col-9 text-gray-800">{{ get(destination, 'name', '-') }}</h1>
+      <div class="col-3 text-right">
+        <b-button
+          @click="$router.push({
+              path: '/wisata/'
+            })"
+          variant="success"
+          class="mr-3">
+          Kembali
+        </b-button>
+        <b-button
+          @click="$router.push({
+              path: '/wisata/' + destination.id + '/edit'
+            })"
+          variant="primary"
+          class="mr-3">
+          Edit
+        </b-button>
+        <b-button
+          @click="removeDestination"
+          variant="danger">
+          Hapus
+        </b-button>
+      </div>
+    </div>
 
     <div class="row">
-      <div class="col-sm-3">
+      <div class="col-sm-12">
         <b-card
-          title="Wisata 1"
+          :title="get(destination, 'name', '-')"
           img-src="https://picsum.photos/600/300/?image=25"
           img-top
-          style="max-width: 20rem;"
-          class="mb-2"
         >
           <b-card-text>
-            Some quick example text to build on the card title and make up the bulk of the card's content.
+            {{ get(destination, 'detail', '-') }}
           </b-card-text>
-          <b-button href="#" variant="primary">More Info</b-button>
-        </b-card>
-      </div>
-
-      <div class="col-sm-3">
-        <b-card
-          title="Wisata 2"
-          img-src="https://picsum.photos/600/300/?image=25"
-          img-top
-          style="max-width: 20rem;"
-          class="mb-2"
-        >
-          <b-card-text>
-            Some quick example text to build on the card title and make up the bulk of the card's content.
-          </b-card-text>
-          <b-button href="#" variant="primary">More Info</b-button>
         </b-card>
       </div>
     </div>
@@ -40,3 +47,64 @@
   </div>
   <!-- /.container-fluid -->
 </template>
+<script>
+import { get } from 'lodash'
+import { mapGetters } from 'vuex'
+export default {
+  data () {
+    return {
+      get: get
+    }
+  },
+  computed: {
+    ...mapGetters({
+      destination: 'destination/getDestination'
+    })
+  },
+  methods: {
+    loadDestinationData () {
+      this.$store.dispatch('destination/loadDestination', this.$route.params.wisataId)
+    },
+    removeDestination () {
+      this.$swal({
+        icon: 'warning',
+        title: 'Warning!',
+        text: 'Are you sure?',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        confirmButtonColor: '#E02C1A',
+        cancelButtonText: 'Cancel',
+      })
+        .then(response => {
+          if (response.isConfirmed) {
+            this.$store.dispatch('destination/removeDestination', this.$route.params.wisataId)
+            .then(response => {
+              let successMsg = get(response, ['data', 'message'], '')
+              this.$swal({
+                icon: 'success',
+                title: 'Success!',
+                text: successMsg,
+              })
+                .then(response => {
+                  if (response.isConfirmed) {
+                    this.$router.replace({ name: 'wisata' })
+                  }
+                })
+            })
+            .catch(error => {
+              let errorMsg = get(error, ['response', 'data', 'message'], '')
+              this.$swal({
+                icon: 'error',
+                title: 'Error!',
+                text: errorMsg,
+              })
+            })
+          }
+        })
+    }
+  },
+  beforeMount () {
+    this.loadDestinationData()
+  }
+}
+</script>

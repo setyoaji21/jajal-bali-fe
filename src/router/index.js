@@ -22,12 +22,12 @@ const routes = [
       },
       {
         path: '/wisata/:wisataId',
-        name: 'wisata-detail',
+        name: 'wisata-id',
         component: () => import('../views/Wisata/detail.vue')
       },
       {
         path: '/wisata/:wisataId/edit',
-        name: 'wisata-edit',
+        name: 'wisata-id-edit',
         component: () => import('../views/Wisata/edit.vue')
       },
       {
