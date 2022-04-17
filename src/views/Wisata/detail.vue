@@ -30,17 +30,18 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-sm-12">
         <b-card
           img-src="https://picsum.photos/600/300/?image=25"
           img-top
           class="mb-2"
         >
-          <div class="row">
+          <div class="row mb-3">
             <div class="col-sm-6">
-              <h3>{{ get(destination, 'name', '-') }}</h3>
-              <p class="text-gray-600" style="font-size: small;">Lokasi: {{ get(destination, 'location', '-') }}</p>
+              <!-- <h3>{{ get(destination, 'name', '-') }}</h3> -->
+              <p class="text-gray-600 m-0 font-weight-bold" style="font-size: small;">Lokasi: {{ get(destination, 'location', '-') }}</p>
+              <p class="text-gray-600 font-weight-bold" style="font-size: small;">HTM: IDR {{ get(destination, 'price', '-') }}</p>
             </div>
             <div class="col-sm-6 text-right">
               <b-form-rating
@@ -54,11 +55,12 @@
             </div>
           </div>
           <b-card-text>
-            {{ get(destination, 'detail', '-') }}
+            <span v-html="get(destination, 'detail', '-')"></span>
           </b-card-text>
         </b-card>
       </div>
     </div>
+
     <div class="row">
       <div class="col-sm-12">
         <b-card
@@ -75,7 +77,6 @@
                   <div class="col-sm-8">
                     <h6 class="m-0">{{ get(review, 'name', '-') }}</h6>
                     <p class="text-gray-500" style="font-size: x-small;">{{ moment(review.created_at, 'DD-MM-YYYY').format('D MMMM YYYY') }}</p>
-                    <!-- <p class="text-gray-500" style="font-size: x-small;">{{ review.created_at }}</p> -->
                   </div>
                   <div class="col-sm-4 text-right">
                     <b-form-rating
@@ -226,7 +227,6 @@ export default {
     },
     getTotalRating () {
       let total = map(this.reviews, 'rating')
-      console.log(total, sum(total), total.length)
       return sum(total) / total.length
     }
   },

@@ -26,7 +26,14 @@
           class="mb-2"
         >
           <b-card-text>
-            {{ destination.detail }}
+            <div class="row">
+              <div class="col-6">
+                <p class="text-gray-600 font-weight-bold m-0" style="font-size: small;">Lokasi: {{ get(destination, 'location', '-') }}</p>
+              </div>
+              <div class="col-6 text-right">
+                <p class="text-gray-600 font-weight-bold m-0" style="font-size: small;">HTM: IDR {{ get(destination, 'price', '-') }}</p>
+              </div>
+            </div>
           </b-card-text>
           <b-button
             @click="$router.push({
@@ -43,8 +50,14 @@
   <!-- /.container-fluid -->
 </template>
 <script>
+import { get } from 'lodash'
 import { mapGetters } from 'vuex'
 export default {
+  data () {
+    return {
+      get: get
+    }
+  },
   computed: {
     ...mapGetters({
       destinations: 'destination/getDestinations'

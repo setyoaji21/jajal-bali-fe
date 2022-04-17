@@ -65,5 +65,20 @@ export default {
     })
 
     return response
+  },
+  searchDestination: async({ commit }, payload) => {
+    await axios({
+      url: process.env.VUE_APP_API_URL + '/api/destinations/search',
+      method: 'POST',
+      data: payload,
+      headers: { 'Authorization': 'Bearer ' + userData.token }
+    })
+      .then(response => {
+        commit('SET_DESTINATIONS', get(response, ['data', 'data'], []))
+        return Promise.resolve(response)
+      })
+      .catch(error => {
+        return Promise.reject(error)
+      })
   }
 }

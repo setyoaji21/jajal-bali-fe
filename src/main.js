@@ -5,6 +5,7 @@ import store from './store'
 import moment from 'moment'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueSweetalert2 from 'vue-sweetalert2'
+import CKEditor from 'ckeditor4-vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -25,6 +26,7 @@ Vue.prototype.moment = moment
 Vue.use(BootstrapVue)
 Vue.use(VueSweetalert2)
 Vue.use(IconsPlugin)
+Vue.use(CKEditor)
 
 Vue.config.productionTip = false
 

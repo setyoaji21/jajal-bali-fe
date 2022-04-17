@@ -41,13 +41,14 @@
             </div>
             <div class="form-group row">
               <label class="col-form-label col-sm-3">Detail</label>
-              <div class="col-sm-9">
-                <b-form-textarea
+              <div id="app" class="col-sm-9">
+                <ckeditor v-model="wisata.detail" :config="editorConfig"></ckeditor>
+                <!-- <b-form-textarea
                   v-model="wisata.detail"
                   placeholder="Detail"
                   rows="3"
                   max-rows="10">
-                </b-form-textarea>
+                </b-form-textarea> -->
               </div>
             </div>
             <div class="form-group row">
@@ -82,10 +83,12 @@
 import { get, pick } from 'lodash'
 import { mapGetters } from 'vuex'
 export default {
+  name: 'app',
   data () {
     return {
       get: get,
-      wisata: {}
+      wisata: {},
+      editorConfig: {}
     }
   },
   computed: {
