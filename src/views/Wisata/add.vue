@@ -118,7 +118,6 @@ export default {
             })
         })
         .catch(error => {
-          console.log(error)
           let errorMsg = get(error, ['response', 'data', 'message'], '')
           this.$swal({
             icon: 'error',
