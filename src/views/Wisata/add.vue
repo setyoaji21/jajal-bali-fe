@@ -61,6 +61,17 @@
                 </b-form-input>
               </div>
             </div>
+            <div class="form-group row">
+              <label class="col-form-label col-sm-3">Picture</label>
+              <div class="col-sm-9">
+                <b-form-file
+                  accept="image/jpeg, image/png"
+                  v-model="wisata.picture"
+                  placeholder="Choose an image..."
+                  drop-placeholder="Drop an image here..."
+                ></b-form-file>
+              </div>
+            </div>
             <div class="col-12 mt-5 text-right">
               <b-button class="text-right mr-3" variant="secondary" @click="$router.push({ path: '/wisata' })">Batal</b-button>
               <b-button variant="success" @click="saveDestination">Simpan</b-button>
@@ -84,7 +95,8 @@ export default {
         category: '',
         detail: '',
         price: 0,
-        location: ''
+        location: '',
+        picture: null
       },
       editorConfig: {}
     }
@@ -106,6 +118,7 @@ export default {
             })
         })
         .catch(error => {
+          console.log(error)
           let errorMsg = get(error, ['response', 'data', 'message'], '')
           this.$swal({
             icon: 'error',
